@@ -31,7 +31,7 @@ public class SimplexTable {
     private Matrix A;
     
     //constant of objective function variables
-    private double[] C;
+    private Double[] C;
     
     //RHS of Table
     double[] b;
@@ -40,9 +40,9 @@ public class SimplexTable {
     Matrix ACb;
     
     //Vector of Basic variables
-    private int[] Basic;
+    private Integer[] Basic;
     
-    public SimplexTable(Matrix A,double[] C,double[] b) {
+    public SimplexTable(Matrix A,Double[] C,double[] b) {
         //Sets Value
         this.A = A;
         this.C = C; //must be -C and RHS of C Zero
@@ -110,9 +110,10 @@ public class SimplexTable {
 
     private int getIndexOfOutVariable() {
         //return index of out Variable
+        return -1;
     }
     
-    public int[] getBasicVariables() {
+    public Integer[] getBasicVariables() {
         return Basic;
     }
     
