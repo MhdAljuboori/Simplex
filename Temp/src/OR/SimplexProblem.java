@@ -9,7 +9,7 @@ package OR;
 public class SimplexProblem {
     Matrix A;
     Matrix C;
-    
+    Matrix b;
     /**
      * a constructor for internal uses only
      */
@@ -24,13 +24,15 @@ public class SimplexProblem {
        int m = A.length;
        int n = A[0].length ;
        Matrix mA = new Matrix(m, n + m);
-       
-       int[] width = new int[m];
-       for (int i=0;i<m;i++) width[i] = i;
+       // filling Matrix A
+       mA.setMatrix(0,m-1,0,n-1, new Matrix(A));
        //extends the matrix by an identity matrix of slacks
-       mA.setMatrix(n, n+m-1,new int[m], Matrix.identity(m, m));
+       mA.setMatrix(0,m-1,n,n+m-1, Matrix.identity(m, m));
        this.A = mA;
-       //this.C = new Matrix;
+       this.C = new Matrix(1,n+m);
+       this.C.setMatrix(0, 0, 0, n-1, new Matrix(new double[][] {C}));
+       this.C.setMatrix(0, 0, n, n+m-1, new Matrix(new double[1][m]));
+       this.b = new Matrix(new double[][] {b}).transpose();
     }
     
     /**
