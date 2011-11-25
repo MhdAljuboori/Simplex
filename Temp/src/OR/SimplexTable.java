@@ -6,22 +6,8 @@ package OR;
  */
 public class SimplexTable {
     
-//    private int m,n;
-//    private double[][] table;
-//    
-//    public SimplexTable(int n,int m) {
-//        this.m = m;
-//        this.n = n;
-//        table = new double[n][m];
-//    }
-    
-    private Matrix items;
-    
     private int numberOfVariable;
     private int numberOfEquation;
-    
-    private int numberOfBasicVariables;
-    private int numberOfNonBasicVariables;
     
     // is objective function Max
     private boolean isMax;
@@ -47,6 +33,9 @@ public class SimplexTable {
         this.C = C; //must be -C and RHS of C Zero
         //this.ACb = //Concat A and C and b;
         // and set zeros in first column
+        
+        //set number of variables in numberOfVariable instance
+        //set number of equation in numberOfEquation instance
     }
     
     
@@ -93,23 +82,49 @@ public class SimplexTable {
         // Muximun in absolute
         double maximum = 0;
         
+        //Index of in variable
+        int index = -1;
+        
         // for all instance of objective function variables
         for (int i = 0; i < C.length; i++) {
             if (isMax) {
-                if (maximum > C[i])
+                if (maximum > C[i]) {
                     maximum = C[i];
+                    index = i;
+                }
             }
             else {
-                if (maximum < C[i])
+                if (maximum < C[i]) {
                     maximum = C[i];
+                    index = i;
+                }
             }
         }
-        return getIndexOfVariable(C, maximum);
+        return index;
     }
 
-    private int getIndexOfOutVariable() {
-        //return index of out Variable
-        return -1;
+    private int getIndexOfOutVariable(int indexOfInVariable) {
+        // Minimum number b_i / y_ik in column that has variable which will enter solution
+        double minimum =0.0;
+        // To Know that it's first time we calculate right b_i / y_ik
+        boolean firstEnter = true;
+        //index of variable wich eill out the solution
+        int index = -1;
+        
+        //for all item in column of variable will in solution
+        for (int i = 0; i < numberOfEquation; i++) {
+            if (ACb.get(i,indexOfInVariable) != 0) {
+                double helpNumber = b[i] / ACb.get(i,indexOfInVariable);
+                if (helpNumber > 0) {
+                    if (minimum > ACb.get(i,indexOfInVariable)/b[i] || firstEnter) {
+                        minimum = ACb.get(i,indexOfInVariable)/b[i];
+                        index = i;
+                        firstEnter = false;
+                    }
+                }
+            }
+        }
+        return index;
     }
     
     public Integer[] getBasicVariables() {
@@ -120,13 +135,12 @@ public class SimplexTable {
         return b;
     }
     
-    
-    
     ///
     /// update teble to get best solution
     ///
     public void updateTable() {
-        ACb = getNewTable(getIndexOfOutVariable(), getIndexOfInVariable());
+        int indexOfInVariable = getIndexOfInVariable();
+        ACb = getNewTable(getIndexOfOutVariable(indexOfInVariable), indexOfInVariable);
     }
     
     ///
