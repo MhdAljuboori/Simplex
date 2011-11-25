@@ -41,4 +41,8 @@ public class SimplexProblem {
     public static SimplexProblem fromBasicFrom() {
         return new SimplexProblem();
     }
+    
+    public Solution solveByTableSimplex() {g
+        return new Solution();
+    }
 }
