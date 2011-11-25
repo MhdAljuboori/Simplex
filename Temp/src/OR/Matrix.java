@@ -7,7 +7,6 @@ import java.util.Locale;
 import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.StreamTokenizer;
-import Jama.util.*;
 
 /**
    Jama = Java Matrix class.
@@ -501,20 +500,6 @@ public class Matrix implements Cloneable, java.io.Serializable {
             s += Math.abs(A[i][j]);
          }
          f = Math.max(f,s);
-      }
-      return f;
-   }
-
-   /** Frobenius norm
-   @return    sqrt of sum of squares of all elements.
-   */
-
-   public double normF () {
-      double f = 0;
-      for (int i = 0; i < m; i++) {
-         for (int j = 0; j < n; j++) {
-            f = Maths.hypot(f,A[i][j]);
-         }
       }
       return f;
    }
