@@ -10,6 +10,7 @@
  */
 package main;
 
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
@@ -40,7 +41,7 @@ public class MainForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabB = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         lblZstatement = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -106,7 +107,7 @@ public class MainForm extends javax.swing.JFrame {
 
         jLabel2.setText("A = ");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabB.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -125,7 +126,7 @@ public class MainForm extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable1);
+        jScrollPane3.setViewportView(tabB);
 
         jLabel3.setText("<=");
 
@@ -242,7 +243,11 @@ private void cbMaxMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
 private void btnAddConditionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddConditionActionPerformed
 // TODO add your handling code here:
-    
+   DefaultTableModel model = (DefaultTableModel) tabConditions.getModel();
+   model.addRow(new java.util.Vector<Object>());
+   model = (DefaultTableModel) tabB.getModel();
+   model.addRow(new java.util.Vector<Object>());
+   
 }//GEN-LAST:event_btnAddConditionActionPerformed
 
     /**
@@ -291,8 +296,8 @@ private void btnAddConditionActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblZstatement;
+    private javax.swing.JTable tabB;
     private javax.swing.JTable tabC;
     private javax.swing.JTable tabConditions;
     // End of variables declaration//GEN-END:variables
