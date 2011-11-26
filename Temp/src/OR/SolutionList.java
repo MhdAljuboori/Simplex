@@ -32,7 +32,7 @@ public class SolutionList extends LinkedList<Double[]> {
             return true;
         }
         else{
-            throw new RuntimeException("item must be Double[" + (n+1) +"]");
+            throw new RuntimeException("item must be Double[" + (n) +"]");
         }
     }
     
