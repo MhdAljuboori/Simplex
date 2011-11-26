@@ -7,6 +7,15 @@ import java.util.Hashtable;
  *
  *
  */
-public class Solution extends Hashtable<Integer, Double> {
+public class Solution {
+
+    private Double[] variables;
     
+    public Solution(Double[] variables) {
+        this.variables = variables;
+    }
+    
+    public Double getValue(int numberOfVariable) {
+        return variables[numberOfVariable];
+    }
 }

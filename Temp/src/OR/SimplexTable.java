@@ -27,6 +27,9 @@ public class SimplexTable {
     //Vector of Basic variables
     private Integer[] Basic;
     
+    // class have basic variable and it's value
+    private Solution solution;
+    
     public SimplexTable(Matrix A,Double[] C,double[] b) {
         //Sets Value
         this.A = A;
@@ -80,15 +83,15 @@ public class SimplexTable {
     
     private int getIndexOfInVariable() {
         // Muximun in absolute
-        double maximum = 0;
+        double maximum = 0.0;
         
         //Index of in variable
         int index = -1;
         
         // for all instance of objective function variables
-        for (int i = 0; i < C.length; i++) {
+        for (int i = 0; i < numberOfVariable +2/*for ObjFun and RHS*/; i++) {
             if (isMax) {
-                if (maximum > C[i]) {
+                if (maximum > ACb.get(0, i)) {
                     maximum = C[i];
                     index = i;
                 }
@@ -112,9 +115,10 @@ public class SimplexTable {
         int index = -1;
         
         //for all item in column of variable will in solution
-        for (int i = 0; i < numberOfEquation; i++) {
+        for (int i = 1; i < numberOfEquation +1/*for ObjFun*/; i++) {
             if (ACb.get(i,indexOfInVariable) != 0) {
-                double helpNumber = b[i] / ACb.get(i,indexOfInVariable);
+                double helpNumber = ACb.get(i, numberOfVariable+1/*last column*/) / 
+                        ACb.get(i,indexOfInVariable);
                 if (helpNumber > 0) {
                     if (minimum > ACb.get(i,indexOfInVariable)/b[i] || firstEnter) {
                         minimum = ACb.get(i,indexOfInVariable)/b[i];
@@ -131,8 +135,19 @@ public class SimplexTable {
         return Basic;
     }
     
-    public double[] getSolution() {
-        return b;
+    public Solution getSolution() {
+        return solution;
+    }
+    
+    public boolean isThereNonBasicVariableZero() {
+        for (int j = 0; j < numberOfVariable; j++) {
+            if (j != Basic[j]) {
+                if (A.get(1, j) == 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     ///
@@ -141,7 +156,7 @@ public class SimplexTable {
     /**
      * 
      * @return -1 if the solution is best 
-     *         -2 if there is unlimited solution
+     *         -2 if there is unknown solution
      *          0 Table was updated
      */
     public int updateTable() {
@@ -202,5 +217,4 @@ public class SimplexTable {
         }
         return updatedMatrix;
     }
-
 }
