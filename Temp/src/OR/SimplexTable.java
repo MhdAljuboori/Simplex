@@ -5,7 +5,7 @@ package OR;
  * 
  */
 public class SimplexTable {
-    
+    //Number of variable an equation
     private int numberOfVariable;
     private int numberOfEquation;
     
@@ -18,9 +18,6 @@ public class SimplexTable {
     //constant of objective function variables
     private Double[] C;
     
-    //RHS of Table
-    //double[] b;
-    
     //Concat between A and C
     Matrix ACb;
     
@@ -30,10 +27,11 @@ public class SimplexTable {
     // class have basic variable and it's value
     private Solution solution;
     
-    public SimplexTable(Matrix A,Double[] C,Double[] b) {
+    public SimplexTable(Matrix A,Double[] C,Double[] b,boolean isMax) {
         //Sets Value
         this.A = A;
         this.C = C; 
+        this.isMax = isMax;
         
         //Get First Zero in C to Calculate number of Basic variable
         int indexOfFirstZero = getIndexOfFirstZero(C);
@@ -53,29 +51,48 @@ public class SimplexTable {
         //Add C after change to ACb Matrix
         this.ACb.addVectorAsRaw(0, 0, numberOfVariable+1, C);
         
-        
         //set new solution in solution variable
         setNewSolution(ACb);
     }
     
+    /**
+     * 
+     * @param C the vector which will return invert of it
+     * @return invert and add one to first of vector of C vector
+     */
     private Double[] getInvertAndAddOne(Double[] C) {
         Double[] NewC = new Double[C.length+2];
+        //Set 1 at first of vector the instance of Z
         NewC[0] = 1.0;
+        
+        //for all item in C copy to newC
         for (int i = 0; i < C.length; i++) {
             NewC[i+1] = C[i] * -1;
         }
+        
+        //Set 0 at end of vector the value of Z
         NewC[NewC.length-1] = 0.0;
         return NewC;
     }
     
+    /**
+     * 
+     * @param ACb to set solution in solution variable
+     */
     private void setNewSolution(Matrix ACb) {
         Double[] Newb = new Double[numberOfEquation +1/*of ObjFun*/];
+        //for all b in ACb Matrix
         for (int i = 0; i < numberOfEquation +1/*of ObjFun*/; i++) {
             Newb [i] = ACb.get(i, numberOfVariable +1/*last column*/);
         }
         solution = new Solution(Newb,Basic);
     }
     
+    /**
+     * 
+     * @param Basic vector of basic variable
+     * @param index number of first Basic variable in objective function
+     */
     private void setBasicVarialeInVector(Integer[] Basic,int index) {
         Basic = new Integer[C.length - index];
         for (int i=index ; i < C.length ; i++) {
@@ -83,6 +100,11 @@ public class SimplexTable {
         }
     }
     
+    /**
+     * 
+     * @param C the vector of objective function
+     * @return the first index of first zero
+     */
     private int getIndexOfFirstZero(Double[] C) {
         for (int i = 0; i < C.length; i++) {
             if (C[i] == 0)
@@ -114,24 +136,51 @@ public class SimplexTable {
     
     /**
      * 
+     * @param <T> double or integer ...etc.
+     * @param vector which we'll search on it
+     * @param value which we'll search for it
+     * @return true if value was found else return false
+     */
+    private <T> boolean find(T[] vector,T value) {
+        for (int i = 0; i < vector.length; i++) {
+            if (value == vector[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
+    /**
+     * 
      * @return true if it is best solution else return false
      */
     public boolean isItBestSolution() {
+        //for all value in C
         for (int i = 0; i < C.length; i++) {
+            //if the objective function Max
             if (isMax) {
+                //if value is smaller than zero
                 if (C[i] < 0) {
                     return false;
                 }
             }
+            //if the objective function Min
             else {
+                //if value is larger than zero
                 if (C[i] > 0) {
                     return false;
                 }
             }
         }
+        //if it's best solution
         return true;
     }
     
+    /**
+     * 
+     * @return index of in variable by looking in objective function equation
+     */
     private int getIndexOfInVariable() {
         // Muximun in absolute
         double maximum = 0.0;
@@ -141,13 +190,17 @@ public class SimplexTable {
         
         // for all instance of objective function variables
         for (int i = 0; i < numberOfVariable +2/*for ObjFun and RHS*/; i++) {
+            //if the objective function Max
             if (isMax) {
+                //if there is number smaller than last
                 if (maximum > ACb.get(0, i)) {
                     maximum = C[i];
                     index = i;
                 }
             }
+            //if the objective function Min
             else {
+                //if there is number larger than last
                 if (maximum < C[i]) {
                     maximum = C[i];
                     index = i;
@@ -157,6 +210,11 @@ public class SimplexTable {
         return index;
     }
     
+    /**
+     * 
+     * @param indexOfInVariable the index of dependence column
+     * @return index of out variable
+     */
     private int getIndexOfOutVariable(int indexOfInVariable) {
         // Minimum number b_i / y_ik in column that has variable which will enter solution
         double minimum =0.0;
@@ -167,10 +225,14 @@ public class SimplexTable {
         
         //for all item in column of variable will in solution
         for (int i = 1; i < numberOfEquation +1/*for ObjFun*/; i++) {
+            //if y_ik <> 0
             if (ACb.get(i,indexOfInVariable) != 0) {
+                // b_i/y_ik
                 double helpNumber = ACb.get(i, numberOfVariable+1/*last column*/) / 
                         ACb.get(i,indexOfInVariable);
+                //if b_i/y_ik > 0
                 if (helpNumber > 0) {
+                    //if there is number smaller than last or this is first enter in if statement
                     if (minimum > ACb.get(i,indexOfInVariable)/ACb.get(i, numberOfVariable+1/*last column*/)
                             || firstEnter) {
                         minimum = ACb.get(i,indexOfInVariable)/ACb.get(i, numberOfVariable+1/*last column*/);
@@ -183,19 +245,18 @@ public class SimplexTable {
         return index;
     }
     
+    /**
+     * 
+     * @return solution of Table for now
+     */
     public Solution getSolution() {
         return solution;
     }
     
-    private <T> boolean find(T[] vector,T value) {
-        for (int i = 0; i < vector.length; i++) {
-            if (value == vector[i]) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
+    /**
+     * 
+     * @return Number of Non basic variable equal to zero in objective function
+     */
     public int NumberOfNonBasicVariableZero() {
         int number =0;
         for (int j = 1; j < numberOfVariable+1; j++) {
