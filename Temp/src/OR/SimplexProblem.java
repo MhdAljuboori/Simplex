@@ -10,6 +10,11 @@ public class SimplexProblem {
     Matrix A;
     Matrix C;
     Matrix b;
+    ProblemType Type;
+    public enum ProblemType {
+        Max,
+        Min
+    }
     /**
      * a constructor for internal uses only
      */
@@ -17,9 +22,9 @@ public class SimplexProblem {
         
     }
     
-    public SimplexProblem(double[][] A,double[] C , double[] b) {
+    public SimplexProblem(ProblemType type,double[][] A,double[] C , double[] b) {
        // we consider that all conditions are <=  .... simple simplex
-        
+       this.Type = type;
        //creating Matrix[m,n+m]; slack for every condition
        int m = A.length;
        int n = A[0].length ;
@@ -35,7 +40,7 @@ public class SimplexProblem {
        this.b = new Matrix(new double[][] {b}).transpose();
     }
     
-    /**
+    /** 
      * method for creating Simplex Problem by Entering the Basic Form
      */
     public static SimplexProblem fromBasicFrom() {
