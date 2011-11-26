@@ -27,7 +27,7 @@ public class SolutionList extends LinkedList<Double[]> {
      */
     @Override
     public boolean add(Double[] item) {
-        if (item.length == n+1) {
+        if (item.length == n) {
             super.add(item);
             return true;
         }
