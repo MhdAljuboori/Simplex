@@ -1,8 +1,6 @@
 
 package OR;
 
-import java.util.Hashtable;
-
 /**
  *
  *
@@ -11,11 +9,32 @@ public class Solution {
 
     private Double[] variables;
     
-    public Solution(Double[] variables) {
+    private Integer[] Basic;
+    
+    public Solution(Double[] variables,Integer[] Basic) {
         this.variables = variables;
+        this.Basic = Basic;
     }
     
     public Double getValue(int numberOfVariable) {
         return variables[numberOfVariable];
+    }
+    
+    public Integer getBasicFromIndex(int index) {
+        return Basic[index];
+    }
+
+    /**
+     * @param variables the variables to set
+     */
+    public void setVariables(Double[] variables) {
+        this.variables = variables;
+    }
+
+    /**
+     * @param Basic the Basic to set
+     */
+    public void setBasic(Integer[] Basic) {
+        this.Basic = Basic;
     }
 }

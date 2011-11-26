@@ -19,7 +19,7 @@ public class SimplexTable {
     private Double[] C;
     
     //RHS of Table
-    double[] b;
+    //double[] b;
     
     //Concat between A and C
     Matrix ACb;
@@ -33,14 +33,32 @@ public class SimplexTable {
     public SimplexTable(Matrix A,Double[] C,Double[] b) {
         //Sets Value
         this.A = A;
-        this.C = C; //must be -C and RHS of C Zero
+        this.C = C; 
         int indexOfFirstZero = getIndexOfFirstZero(C);
+        //must be -C in Table
+        invert(C);
         setBasicVarialeInVector(Basic,indexOfFirstZero);
         //this.ACb = //Concat A and C and b;
         // and set zeros in first column
         
         //set number of variables in numberOfVariable instance
         //set number of equation in numberOfEquation instance
+        setNewSolution(ACb);
+        //solution = new Solution()
+    }
+    
+    private void invert(Double[] C) {
+        for (int i = 0; i < C.length; i++) {
+            C[i] *= -1;
+        }
+    }
+    
+    private void setNewSolution(Matrix ACb) {
+        Double[] Newb = new Double[numberOfEquation +1/*of ObjFun*/];
+        for (int i = 0; i < numberOfEquation +1/*of ObjFun*/; i++) {
+            Newb [i] = ACb.get(i, numberOfVariable +1/*last column*/);
+        }
+        solution = new Solution(Newb,Basic);
     }
     
     private void setBasicVarialeInVector(Integer[] Basic,int index) {
@@ -68,6 +86,7 @@ public class SimplexTable {
      * @return the index of variable in basic variable vector
      */
     
+    /*
     private < T > int getIndexOfVariable(T[] vector,T Variable) {
         for (int i = 0; i < vector.length; i++) {
             if (vector[i] == Variable) {
@@ -76,6 +95,7 @@ public class SimplexTable {
         }
         return -1;
      }
+     */
     
     /**
      * 
@@ -121,7 +141,7 @@ public class SimplexTable {
         }
         return index;
     }
-
+    
     private int getIndexOfOutVariable(int indexOfInVariable) {
         // Minimum number b_i / y_ik in column that has variable which will enter solution
         double minimum =0.0;
@@ -136,8 +156,9 @@ public class SimplexTable {
                 double helpNumber = ACb.get(i, numberOfVariable+1/*last column*/) / 
                         ACb.get(i,indexOfInVariable);
                 if (helpNumber > 0) {
-                    if (minimum > ACb.get(i,indexOfInVariable)/b[i] || firstEnter) {
-                        minimum = ACb.get(i,indexOfInVariable)/b[i];
+                    if (minimum > ACb.get(i,indexOfInVariable)/ACb.get(i, numberOfVariable+1/*last column*/)
+                            || firstEnter) {
+                        minimum = ACb.get(i,indexOfInVariable)/ACb.get(i, numberOfVariable+1/*last column*/);
                         index = i;
                         firstEnter = false;
                     }
@@ -145,10 +166,6 @@ public class SimplexTable {
             }
         }
         return index;
-    }
-    
-    public Integer[] getBasicVariables() {
-        return Basic;
     }
     
     public Solution getSolution() {
@@ -185,8 +202,12 @@ public class SimplexTable {
             return -2;
         }
         else {
-            //TODO Here update Basic
+            //Entry inVariables instead of outVariable
+            Basic[indexOfOutVariable -1/*for ObjFun*/] = indexOfInVariable;
+            //Get New Table after update it
             ACb = getNewTable(indexOfOutVariable, indexOfInVariable);
+            //Set new solution in solution Class
+            setNewSolution(ACb);
             return 0;
         }
     }
@@ -199,20 +220,18 @@ public class SimplexTable {
      * @param inVariable the variable which will in the basic solution
      *        outVariable the variable which will out the basic solution
      */
-    private Matrix getNewTable(int indexOfOutVariable,int indexOfInVariable) {        
+    private Matrix getNewTable(int indexOfOutVariable,int indexOfInVariable) {
         
         //New matrix to set new value in it
-        Matrix updatedMatrix = new Matrix(numberOfEquation,numberOfVariable);
-        
-        //Entry inVariables instead of outVariable
-        //Basic[indexOfOutVariable] = inVariable;
+        Matrix updatedMatrix = new Matrix(numberOfEquation +1/*for ObjFun*/ ,
+                numberOfVariable +2/*for instance of ObjFun and RHS*/);
         
         //get dependence item
         double a = ACb.get(indexOfOutVariable, indexOfInVariable);
         
         //for all items in table
         for (int i = 0; i < numberOfEquation +1/*for Ojective function*/; i++) {
-            for (int j = 0; j < numberOfVariable; j++) {
+            for (int j = 0; j < numberOfVariable +2/*for instance of ObjFun and RHS*/; j++) {
                 if (i == indexOfOutVariable) {
                     //if it's the same line a' = b/a
                     // b: item we want to update it
@@ -226,7 +245,7 @@ public class SimplexTable {
                     // c: the intersection between 'd' Line and 'a' column
                     // d: dependence point
                     updatedMatrix.set(i, j, ACb.get(i, j)/*d*/ - (ACb.get(indexOfOutVariable, j)/*b*/ *
-                            ACb.get(i, inVariable)/*c*/)/a);
+                            ACb.get(i, indexOfInVariable)/*c*/)/a);
                 }
             }
         }
