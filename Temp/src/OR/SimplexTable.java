@@ -98,12 +98,15 @@ public class SimplexTable {
      * @param ACb to set solution in solution variable
      */
     private void setNewSolution(Matrix ACb) {
-        solution = new SolutionList(numberOfVariable);
+        solution = new SolutionList(numberOfVariable +1/*of ObjFun*/);
         Double[] Newb = new Double[numberOfVariable +1/*of ObjFun*/];
+        
+        int AI =0;
         //for all b in ACb Matrix
         for (int i = 0; i < numberOfVariable+1/*of ObjFun*/; i++) {
-            if(find(Basic, i)) {
-                Newb[i] = ACb.get(i, numberOfVariable +1/*last column*/);
+            if(find(Basic, i) || i == 0) {
+                Newb[i] = ACb.get(AI, numberOfVariable +1/*last column*/);
+                AI++;
             }
             else {
                 Newb[i] = 0.0;
