@@ -1,5 +1,4 @@
 package OR;
-
 /**
  *
  * 
@@ -43,23 +42,35 @@ public class SimplexTable {
         //Get First Zero in C to Calculate number of Basic variable
         int indexOfFirstZero = getIndexOfFirstZero(C);
         //Set basic variable in basic vector
-        setBasicVarialeInVector(Basic,indexOfFirstZero);
+        Basic = getBasicVariableVector(indexOfFirstZero);
         
         //set number of variables in numberOfVariable instance
         this.numberOfVariable = C.length;
         //set number of equation in numberOfEquation instance
         this.numberOfEquation = A.getRowDimension();
         
+        ACb = new Matrix(A.getArray());
+        
         //must be -C in Table and Z instance which is it One
         C = getInvertAndAddOne(C);
         
+        //Add firs column of Z
+        this.ACb.addVectorAsColumn(0, 0, numberOfEquation-1, getFirstColumn());
         //Add b to ACb Matrix
-        this.ACb.addVectorAsColumn(numberOfVariable+1, 0, numberOfEquation, b);
+        this.ACb.addVectorAsColumn(numberOfVariable+1, 0, numberOfEquation-1, b);
         //Add C after change to ACb Matrix
         this.ACb.addVectorAsRaw(0, 0, numberOfVariable+1, C);
         
         //set new solution in solution variable
         setNewSolution(ACb);
+    }
+    
+    private Double[] getFirstColumn() {
+    	Double[] helpVector = new Double[numberOfEquation];
+    	for (int i = 0; i < helpVector.length; i++) {
+			helpVector[i] = 0.0;
+		}
+    	return helpVector;
     }
     
     /**
@@ -97,14 +108,15 @@ public class SimplexTable {
     
     /**
      * 
-     * @param Basic vector of basic variable
+     * @retrun Basic vector of basic variable
      * @param index number of first Basic variable in objective function
      */
-    private void setBasicVarialeInVector(Integer[] Basic,int index) {
-        Basic = new Integer[C.length - index];
+    private Integer[] getBasicVariableVector(int index) {
+        Integer[] newVector = new Integer[C.length - index];
         for (int i=index ; i < C.length ; i++) {
-            Basic[i-index] = i+1;
+            newVector[i-index] = i+1;
         }
+        return newVector;
     }
     
     /**
@@ -201,15 +213,15 @@ public class SimplexTable {
             if (isMax) {
                 //if there is number smaller than last
                 if (maximum > ACb.get(0, i)) {
-                    maximum = C[i];
+                    maximum = ACb.get(0, i);
                     index = i;
                 }
             }
             //if the objective function Min
             else {
                 //if there is number larger than last
-                if (maximum < C[i]) {
-                    maximum = C[i];
+                if (maximum < ACb.get(0, i)) {
+                    maximum = ACb.get(0, i);
                     index = i;
                 }
             }
@@ -240,9 +252,8 @@ public class SimplexTable {
                 //if b_i/y_ik > 0
                 if (helpNumber > 0) {
                     //if there is number smaller than last or this is first enter in if statement
-                    if (minimum > ACb.get(i,indexOfInVariable)/ACb.get(i, numberOfVariable+1/*last column*/)
-                            || firstEnter) {
-                        minimum = ACb.get(i,indexOfInVariable)/ACb.get(i, numberOfVariable+1/*last column*/);
+                    if (minimum > helpNumber || firstEnter) {
+                        minimum = helpNumber;
                         index = i;
                         firstEnter = false;
                     }
