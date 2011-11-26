@@ -455,7 +455,70 @@ public class Matrix implements Cloneable, java.io.Serializable {
          throw new ArrayIndexOutOfBoundsException("Submatrix indices");
       }
    }
-
+   
+   /** Add a subvector.
+   @param ii   row index
+   @param j0   Initial column index
+   @param j1   Final column index
+   @exception  ArrayIndexOutOfBoundsException Subvector indices
+   */
+   
+   public void addVectorAsRaw(int ii,int j0,int j1,Double[] X) {
+       this.m += 1;
+       double[][] NewA = new double[m][n];
+       int AI = 0,AJ = 0;
+       try {
+           for (int j = j0; j <= j1; j++) {
+               NewA[ii][j] = X[j];
+           }
+           for (int i = 0; i < m; i++) {
+               for (int j = 0; j < n; j++) {
+                   if (i != ii) {
+                       NewA[i][j] = A[AI][AJ];
+                   }
+                   AJ++;
+               }
+               if (i != ii) {
+                   AI++;
+               }
+               AJ = 0;
+           }
+           A = NewA;
+       }  catch(ArrayIndexOutOfBoundsException e) {
+         throw new ArrayIndexOutOfBoundsException("Subvector indices");
+      }
+   }
+   
+   /** Add a subvector.
+   @param jj   column index
+   @param i0   Initial raw index
+   @param i1   Final raw index
+   @exception  ArrayIndexOutOfBoundsException Subvector indices
+   */
+   
+   public void addVectorAsColumn(int jj,int i0,int i1,Double[] X) {
+       this.n += 1;
+       double[][] NewA = new double[m][n];
+       int AI = 0,AJ = 0;
+       try {
+           for (int i = i0; i <= i1; i++) {
+               NewA[i][jj] = X[i];
+           }
+           for (int i = 0; i < m; i++) {
+               for (int j = 0; j < n; j++) {
+                   if (j != jj) {
+                       NewA[i][j] = A[AI][AJ];
+                       AJ++;
+                   }
+               }
+               AI++;
+               AJ = 0;
+           }
+           A = NewA;
+       } catch(ArrayIndexOutOfBoundsException e) {
+           throw new ArrayIndexOutOfBoundsException("Subvector indices");
+       }
+   }
    /** Matrix transpose.
    @return    A'
    */

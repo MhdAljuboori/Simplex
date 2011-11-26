@@ -34,23 +34,38 @@ public class SimplexTable {
         //Sets Value
         this.A = A;
         this.C = C; 
+        
+        //Get First Zero in C to Calculate number of Basic variable
         int indexOfFirstZero = getIndexOfFirstZero(C);
-        //must be -C in Table
-        invert(C);
+        //Set basic variable in basic vector
         setBasicVarialeInVector(Basic,indexOfFirstZero);
-        //this.ACb = //Concat A and C and b;
-        // and set zeros in first column
         
         //set number of variables in numberOfVariable instance
+        this.numberOfVariable = C.length;
         //set number of equation in numberOfEquation instance
+        this.numberOfEquation = A.getRowDimension();
+        
+        //must be -C in Table and Z instance which is it One
+        C = getInvertAndAddOne(C);
+        
+        //Add b to ACb Matrix
+        this.ACb.addVectorAsColumn(numberOfVariable+1, 0, numberOfEquation, b);
+        //Add C after change to ACb Matrix
+        this.ACb.addVectorAsRaw(0, 0, numberOfVariable+1, C);
+        
+        
+        //set new solution in solution variable
         setNewSolution(ACb);
-        //solution = new Solution()
     }
     
-    private void invert(Double[] C) {
+    private Double[] getInvertAndAddOne(Double[] C) {
+        Double[] NewC = new Double[C.length+2];
+        NewC[0] = 1.0;
         for (int i = 0; i < C.length; i++) {
-            C[i] *= -1;
+            NewC[i+1] = C[i] * -1;
         }
+        NewC[NewC.length-1] = 0.0;
+        return NewC;
     }
     
     private void setNewSolution(Matrix ACb) {
@@ -172,15 +187,25 @@ public class SimplexTable {
         return solution;
     }
     
-    public boolean isThereNonBasicVariableZero() {
-        for (int j = 0; j < numberOfVariable; j++) {
-            if (j != Basic[j]) {
-                if (A.get(1, j) == 0) {
-                    return true;
-                }
+    private <T> boolean find(T[] vector,T value) {
+        for (int i = 0; i < vector.length; i++) {
+            if (value == vector[i]) {
+                return true;
             }
         }
         return false;
+    }
+    
+    public int NumberOfNonBasicVariableZero() {
+        int number =0;
+        for (int j = 1; j < numberOfVariable+1; j++) {
+            if (!find(Basic,j)) {
+                if (A.get(0, j) == 0) {
+                    number++;
+                }
+            }
+        }
+        return number;
     }
     
     ///
@@ -189,7 +214,7 @@ public class SimplexTable {
     /**
      * 
      * @return -1 if the solution is best 
-     *         -2 if there is unknown solution
+     *         -2 if there is unlimited solution
      *          0 Table was updated
      */
     public int updateTable() {
