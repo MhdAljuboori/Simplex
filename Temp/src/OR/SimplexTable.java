@@ -30,10 +30,12 @@ public class SimplexTable {
     // class have basic variable and it's value
     private Solution solution;
     
-    public SimplexTable(Matrix A,Double[] C,double[] b) {
+    public SimplexTable(Matrix A,Double[] C,Double[] b) {
         //Sets Value
         this.A = A;
         this.C = C; //must be -C and RHS of C Zero
+        int indexOfFirstZero = getIndexOfFirstZero(C);
+        setBasicVarialeInVector(Basic,indexOfFirstZero);
         //this.ACb = //Concat A and C and b;
         // and set zeros in first column
         
@@ -41,6 +43,20 @@ public class SimplexTable {
         //set number of equation in numberOfEquation instance
     }
     
+    private void setBasicVarialeInVector(Integer[] Basic,int index) {
+        Basic = new Integer[C.length - index];
+        for (int i=index ; i < C.length ; i++) {
+            Basic[i-index] = i+1;
+        }
+    }
+    
+    private int getIndexOfFirstZero(Double[] C) {
+        for (int i = 0; i < C.length; i++) {
+            if (C[i] == 0)
+                return i;
+        }
+        return -1;
+    }
     
     ///
     /// search variable in basic variables vector 
@@ -169,6 +185,7 @@ public class SimplexTable {
             return -2;
         }
         else {
+            //TODO Here update Basic
             ACb = getNewTable(indexOfOutVariable, indexOfInVariable);
             return 0;
         }
@@ -182,18 +199,16 @@ public class SimplexTable {
      * @param inVariable the variable which will in the basic solution
      *        outVariable the variable which will out the basic solution
      */
-    private Matrix getNewTable(int outVariable,int inVariable) {
-        
-        int indexOfOutVariable = getIndexOfVariable(Basic,outVariable);
+    private Matrix getNewTable(int indexOfOutVariable,int indexOfInVariable) {        
         
         //New matrix to set new value in it
         Matrix updatedMatrix = new Matrix(numberOfEquation,numberOfVariable);
         
         //Entry inVariables instead of outVariable
-        Basic[indexOfOutVariable] = inVariable;
+        //Basic[indexOfOutVariable] = inVariable;
         
         //get dependence item
-        double a = ACb.get(indexOfOutVariable, inVariable);
+        double a = ACb.get(indexOfOutVariable, indexOfInVariable);
         
         //for all items in table
         for (int i = 0; i < numberOfEquation +1/*for Ojective function*/; i++) {
