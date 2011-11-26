@@ -24,7 +24,7 @@ public class SimplexTable {
     private Integer[] Basic;
     
     // class have basic variable and it's value
-    private Solution solution;
+    private SolutionList solution;
     
     /**
      * 
@@ -98,12 +98,18 @@ public class SimplexTable {
      * @param ACb to set solution in solution variable
      */
     private void setNewSolution(Matrix ACb) {
-        Double[] Newb = new Double[numberOfEquation +1/*of ObjFun*/];
+        solution = new SolutionList(numberOfVariable);
+        Double[] Newb = new Double[numberOfVariable +1/*of ObjFun*/];
         //for all b in ACb Matrix
-        for (int i = 0; i < numberOfEquation +1/*of ObjFun*/; i++) {
-            Newb [i] = ACb.get(i, numberOfVariable +1/*last column*/);
+        for (int i = 0; i < numberOfVariable+1/*of ObjFun*/; i++) {
+            if(find(Basic, i)) {
+                Newb[i] = ACb.get(i, numberOfVariable +1/*last column*/);
+            }
+            else {
+                Newb[i] = 0.0;
+            }
         }
-        solution = new Solution(Newb,Basic);
+        solution.add(Newb);
     }
     
     /**
@@ -267,7 +273,7 @@ public class SimplexTable {
      * 
      * @return solution of Table for now
      */
-    public Solution getSolution() {
+    public SolutionList getSolution() {
         return solution;
     }
     
