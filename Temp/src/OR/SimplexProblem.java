@@ -42,7 +42,9 @@ public class SimplexProblem {
         return new SimplexProblem();
     }
     
+    /*
     public Solution solveByTableSimplex() {
         return new Solution();
     }
+    */
 }
