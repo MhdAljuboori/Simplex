@@ -21,8 +21,9 @@ public class SolutionList extends LinkedList<Double[]> {
     /**
      * adds a new Solution to the SolutionList
      * warning : you must add a solution with length = n + 1
-     * @param item
-     * @return 
+     * @param item the solution to Add
+     * @return true upon insertion
+     * @throws RuntimeException when not adding Double[n+1]
      */
     @Override
     public boolean add(Double[] item) {
