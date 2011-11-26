@@ -138,9 +138,25 @@ public class SimplexTable {
     ///
     /// update teble to get best solution
     ///
-    public void updateTable() {
+    /**
+     * 
+     * @return -1 if the solution is best 
+     *         -2 if there is unlimited solution
+     *          0 Table was updated
+     */
+    public int updateTable() {
         int indexOfInVariable = getIndexOfInVariable();
-        ACb = getNewTable(getIndexOfOutVariable(indexOfInVariable), indexOfInVariable);
+        int indexOfOutVariable = getIndexOfOutVariable(indexOfInVariable);
+        if (indexOfInVariable == -1) {
+            return -1; 
+        }
+        else if (indexOfOutVariable == -1) {
+            return -2;
+        }
+        else {
+            ACb = getNewTable(indexOfOutVariable, indexOfInVariable);
+            return 0;
+        }
     }
     
     ///
