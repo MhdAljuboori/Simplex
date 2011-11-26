@@ -11,6 +11,11 @@ public class Solution {
     
     private Integer[] Basic;
     
+    /**
+     * 
+     * @param variables the value of variables
+     * @param Basic the basic vector
+     */
     public Solution(Double[] variables,Integer[] Basic) {
         this.variables = variables;
         this.Basic = Basic;

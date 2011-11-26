@@ -27,6 +27,13 @@ public class SimplexTable {
     // class have basic variable and it's value
     private Solution solution;
     
+    /**
+     * 
+     * @param A the A Matrix
+     * @param C the C vector
+     * @param b the b vector
+     * @param isMax 
+     */
     public SimplexTable(Matrix A,Double[] C,Double[] b,boolean isMax) {
         //Sets Value
         this.A = A;
