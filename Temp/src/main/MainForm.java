@@ -12,6 +12,7 @@ package main;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import sun.util.logging.resources.logging;
 
 /**
  *
@@ -47,6 +48,10 @@ public class MainForm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         cbMaxMin = new javax.swing.JComboBox();
         btnAddCondition = new javax.swing.JButton();
+        btnRemoveCondition = new javax.swing.JButton();
+        btnRemoveVar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -77,7 +82,7 @@ public class MainForm extends javax.swing.JFrame {
         tabConditions.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         jScrollPane1.setViewportView(tabConditions);
 
-        btnAddVar.setText("Add Variable");
+        btnAddVar.setText("+");
         btnAddVar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddVarActionPerformed(evt);
@@ -141,12 +146,30 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
-        btnAddCondition.setText("Add Condition");
+        btnAddCondition.setText("+");
         btnAddCondition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddConditionActionPerformed(evt);
             }
         });
+
+        btnRemoveCondition.setText("-");
+        btnRemoveCondition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveConditionActionPerformed(evt);
+            }
+        });
+
+        btnRemoveVar.setText("-");
+        btnRemoveVar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveVarActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Variables");
+
+        jLabel6.setText("Conditions");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -157,11 +180,6 @@ public class MainForm extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addComponent(btnAddVar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnAddCondition))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel2)
@@ -176,7 +194,21 @@ public class MainForm extends javax.swing.JFrame {
                                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(cbMaxMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnAddCondition)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnRemoveCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnAddVar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnRemoveVar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,6 +216,9 @@ public class MainForm extends javax.swing.JFrame {
                             .addComponent(jLabel5))))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAddCondition, btnAddVar, btnRemoveCondition, btnRemoveVar});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -210,12 +245,25 @@ public class MainForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane3, 0, 0, Short.MAX_VALUE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddVar)
-                    .addComponent(btnAddCondition))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAddVar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRemoveVar))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnAddCondition)
+                                .addComponent(jLabel6))
+                            .addComponent(btnRemoveCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnAddCondition, btnAddVar, btnRemoveCondition, btnRemoveVar});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -247,8 +295,22 @@ private void btnAddConditionActionPerformed(java.awt.event.ActionEvent evt) {//G
    model.addRow(new java.util.Vector<Object>());
    model = (DefaultTableModel) tabB.getModel();
    model.addRow(new java.util.Vector<Object>());
-   
 }//GEN-LAST:event_btnAddConditionActionPerformed
+
+private void btnRemoveConditionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveConditionActionPerformed
+   DefaultTableModel model = (DefaultTableModel) tabConditions.getModel();
+   int count = tabConditions.getRowCount();
+   model.removeRow(count-1);
+   model = (DefaultTableModel) tabB.getModel();
+   model.removeRow(count-1);
+}//GEN-LAST:event_btnRemoveConditionActionPerformed
+
+private void btnRemoveVarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveVarActionPerformed
+// TODO add your handling code here:
+    int count = tabConditions.getColumnCount();
+    tabConditions.removeColumn(tabConditions.getColumn("X" + (count)));
+    tabC.removeColumn(tabC.getColumn("X" + (count)));
+}//GEN-LAST:event_btnRemoveVarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -288,11 +350,15 @@ private void btnAddConditionActionPerformed(java.awt.event.ActionEvent evt) {//G
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddCondition;
     private javax.swing.JButton btnAddVar;
+    private javax.swing.JButton btnRemoveCondition;
+    private javax.swing.JButton btnRemoveVar;
     private javax.swing.JComboBox cbMaxMin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

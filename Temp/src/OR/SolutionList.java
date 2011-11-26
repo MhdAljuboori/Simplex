@@ -36,4 +36,6 @@ public class SolutionList extends LinkedList<Double[]> {
         }
     }
     
+    
+    
 }
