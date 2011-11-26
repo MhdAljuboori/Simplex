@@ -185,18 +185,18 @@ public class SimplexTable {
      */
     public boolean isItBestSolution() {
         //for all value in C
-        for (int i = 0; i < C.length; i++) {
+        for (int i = 0; i < numberOfVariable+2; i++) {
             //if the objective function Max
             if (isMax) {
                 //if value is smaller than zero
-                if (C[i] < 0) {
+                if (ACb.get(0, i) < 0) {
                     return false;
                 }
             }
             //if the objective function Min
             else {
                 //if value is larger than zero
-                if (C[i] > 0) {
+                if (ACb.get(0, i) > 0) {
                     return false;
                 }
             }
