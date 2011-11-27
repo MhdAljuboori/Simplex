@@ -219,7 +219,7 @@ public class MainForm extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -440,8 +440,14 @@ private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     SolutionList list = problem.solveByTableSimplex();
     DefaultTableModel model;
     model = (DefaultTableModel)tabSolutions.getModel();
+   
+    while (list.getLength() > tabSolutions.getColumnCount()) {
+        TableColumn newCol = new TableColumn();
+        newCol.setHeaderValue("X" +  (tabSolutions.getColumnCount() + 1));
+        tabSolutions.addColumn(newCol);
+    }
     
-    model.setColumnCount(list.getLength());
+    //model.setColumnCount(list.getLength());
     for (int i=0;i<list.size();i++) {
         Double[] row = list.get(i);
         model.addRow(row);
