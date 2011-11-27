@@ -65,6 +65,9 @@ public class SimplexProblem {
             if (solutionType == -2) {
                 solution = table.getSolution();
             }
+            else if(solutionType == -1) {
+                break;
+            }
             else {
             	solution = table.getSolution();
             }
