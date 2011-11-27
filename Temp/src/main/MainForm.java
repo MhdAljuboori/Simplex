@@ -14,6 +14,7 @@ import OR.Matrix;
 import OR.SimplexProblem;
 import OR.SolutionList;
 import java.util.Vector;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import sun.util.logging.resources.logging;
@@ -211,10 +212,7 @@ public class MainForm extends javax.swing.JFrame {
 
         tabSolutions.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Z", "X1", "X2", "X3", "X4"
@@ -381,26 +379,40 @@ private void btnRemoveConditionActionPerformed(java.awt.event.ActionEvent evt) {
 private void btnRemoveVarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveVarActionPerformed
 // TODO add your handling code here:
     int count = tabConditions.getColumnCount();
-    tabConditions.removeColumn(tabConditions.getColumn("X" + (count)));
-    tabC.removeColumn(tabC.getColumn("X" + (count)));
+    tabConditions.getColumnModel().removeColumn(tabConditions.getColumn("X" + (count)));
+    tabC.getColumnModel().removeColumn(tabC.getColumn("X" + (count)));
+    System.out.println(tabConditions.getColumnCount()); 
 }//GEN-LAST:event_btnRemoveVarActionPerformed
 
-private static double[][] Vector2doubleArray(Vector<Vector<Double>> a) {
-    
-    double[][] doubles = new double[a.size()][a.get(0).size()];
-    for (int i=0;i<a.size();i++) {
-        for (int j=0;j<a.get(i).size();j++)
+private double[][] Vector2doubleArray(Vector<Vector<Double>> a) {
+    int n = tabConditions.getColumnCount();
+    int m = tabConditions.getRowCount();
+    double[][] doubles = new double[m][n];
+    for (int i=0;i<m;i++) {
+        for (int j=0;j<n;j++)
             doubles[i][j] = a.get(i).get(j);
     }
     return doubles;
 }
 
-private static Double[][] Vector2DoubleArray(Vector<Vector<Double>> a) {
-    
-    Double[][] doubles = new Double[a.size()][a.get(0).size()];
-    for (int i=0;i<a.size();i++) {
-        for (int j=0;j<a.get(i).size();j++)
+private Double[][] Vector2DoubleArray(Vector<Vector<Double>> a) {
+    int n = tabConditions.getColumnCount();
+    int m = tabConditions.getRowCount();
+    Double[][] doubles = new Double[m][n];
+    for (int i=0;i<m;i++) {
+            for (int j=0;j<n;j++)
             doubles[i][j] = a.get(i).get(j);
+    }
+    return doubles;
+}
+
+private double[][] getDataFromTable(JTable table) {
+    int n = table.getColumnCount();
+    int m = table.getRowCount();
+    double[][] doubles = new double[m][n];
+    for (int i=0;i<m;i++) {
+        for (int j=0;j<n;j++)
+            doubles[i][j] = ((Double)table.getValueAt(i, j)).doubleValue();
     }
     return doubles;
 }
@@ -416,23 +428,22 @@ private static Double[] double2Double(double[] a) {
 
 private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
 // TODO add your handling code here:
-    DefaultTableModel model = (DefaultTableModel) tabConditions.getModel();
-    double[][] A = Vector2doubleArray(model.getDataVector());
-    model = (DefaultTableModel) tabC.getModel();
-    Double[] C = Vector2DoubleArray(model.getDataVector())[0];
-    model = (DefaultTableModel) tabB.getModel();
     
-    Matrix temp = new Matrix(Vector2doubleArray(model.getDataVector()));
-    double[] b = temp.transpose().getArray()[0];
+    double[][] A = getDataFromTable(tabConditions);
+
+    double[] C = getDataFromTable(tabC)[0];
+    
+    double[] b = new Matrix(getDataFromTable(tabB)).transpose().getArray()[0];
     
     SimplexProblem problem = new SimplexProblem(SimplexProblem.ProblemType.valueOf(cbMaxMin.getSelectedItem().toString()),
-            A, C, double2Double(b));
+            A, double2Double(C), double2Double(b));
     SolutionList list = problem.solveByTableSimplex();
+    DefaultTableModel model;
     model = (DefaultTableModel)tabSolutions.getModel();
     
     model.setColumnCount(list.getLength());
-    while (!list.isEmpty()) {
-        Double[] row = list.getFirst();
+    for (int i=0;i<list.size();i++) {
+        Double[] row = list.get(i);
         model.addRow(row);
     }
 }//GEN-LAST:event_btnSolveActionPerformed
