@@ -344,7 +344,8 @@ public class SimplexTable {
         
         //for all items in table
         for (int i = 0; i < numberOfEquation +1/*for Ojective function*/; i++) {
-            for (int j = 0; j < numberOfVariable +2/*for instance of ObjFun and RHS*/; j++) {
+            for (int j = 1/*we don't want Z column*/; 
+                    j < numberOfVariable +2/*for instance of ObjFun and RHS*/; j++) {
                 if (i == indexOfOutVariable) {
                     //if it's the same line a' = b/a
                     // b: item we want to update it
