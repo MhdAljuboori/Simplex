@@ -58,8 +58,20 @@ public class SimplexProblem {
     }
     
     public SolutionList solveByTableSimplex() {
+        SolutionList solution = table.getSolution();
         while (!table.isItBestSolution()) {
-            table.updateTable();
+            int solutionType = table.updateTable();
+            if (solutionType == -2) {
+                solution = table.getSolution();
+            }
+            else if(solutionType == -1) {
+                int ZeroNonBasicNumber = table.getIndexOfNonBasicVariableZero();
+                for (int i = 0; i < ZeroNonBasicNumber; i++) {
+                    table.updateTable(table.getIndexOfNonBasicVariableZero());
+                    table.addNewSolution(solution);
+                }
+            }
         }
+        return solution;
     }
 }

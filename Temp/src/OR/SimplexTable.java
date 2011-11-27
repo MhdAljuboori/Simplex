@@ -99,7 +99,7 @@ public class SimplexTable {
      * @param solution variable that we'll add new solution to it
      * @param ACb the Matrix which we'll get solution from it
      */
-    public void addNewSolution(SolutionList solution, Matrix ACb) {
+    public void addNewSolution(SolutionList solution) {
         Double[] Newb = new Double[numberOfVariable +1/*of ObjFun*/];
         
         int AI =0;
@@ -122,7 +122,7 @@ public class SimplexTable {
      */
     private void setNewSolution(Matrix ACb) {
         solution = new SolutionList(numberOfVariable +1/*of ObjFun*/);
-        addNewSolution(solution, ACb);
+        addNewSolution(solution);
     }
     
     /**
@@ -306,22 +306,37 @@ public class SimplexTable {
         return number;
     }
     
-    ///
-    /// update teble to get best solution
-    ///
     /**
+     * 
+     * @return index of first non basic variable equal to zero
+     */
+    public int getIndexOfNonBasicVariableZero() {
+        for (int j = 1; j < numberOfVariable+1; j++) {
+            if (!find(Basic,j)) {
+                if (A.get(0, j) == 0) {
+                    return j;
+                }
+            }
+        }
+        return -1;
+    }
+    
+    /**
+     * update table to get best solution
      * 
      * @return -1 if the solution is best 
      *         -2 if there is unlimited solution
      *          0 Table was updated
      */
-    public void updateTable() {
+    public int updateTable() {
         int indexOfInVariable = getIndexOfInVariable();
         int indexOfOutVariable = getIndexOfOutVariable(indexOfInVariable);
         if (indexOfInVariable == -1) {
-            solution.Type = Best; 
+            solution.setBest();
+            return -1;
         }
         else if (indexOfOutVariable == -1) {
+            solution.setUnlimited();
             return -2;
         }
         else {
@@ -331,15 +346,33 @@ public class SimplexTable {
             ACb = getNewTable(indexOfOutVariable, indexOfInVariable);
             //Set new solution in solution Class
             setNewSolution(ACb);
+            solution.setOne();
             return 0;
         }
     }
     
-    ///
-    /// update table after entry variable to basic variables vector
-    /// and out variable from basic variables vector
-    ///
+    public int updateTable(int indexOfInVariable) {
+        int indexOfOutVariable = getIndexOfOutVariable(indexOfInVariable);
+        if (indexOfOutVariable == -1) {
+            solution.setUnlimited();
+            return -2;
+        }
+        else {
+            //Entry inVariables instead of outVariable
+            Basic[indexOfOutVariable -1/*for ObjFun*/] = indexOfInVariable;
+            //Get New Table after update it
+            ACb = getNewTable(indexOfOutVariable, indexOfInVariable);
+            //Set new solution in solution Class
+            setNewSolution(ACb);
+            solution.setOne();
+            return 0;
+        }
+    }
+    
     /**
+     * update table after entry variable to basic variables vector
+     * and out variable from basic variables vector
+     * 
      * @param inVariable the variable which will in the basic solution
      *        outVariable the variable which will out the basic solution
      */

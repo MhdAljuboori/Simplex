@@ -9,8 +9,8 @@ import java.util.LinkedList;
  */
 public class SolutionList extends LinkedList<Double[]> {
     private int n;
-    public SolutionType Type = SolutionType.One;
-    public enum SolutionType {
+    private SolutionType Type = SolutionType.One;
+    private enum SolutionType {
         One,Unlimited,Infinity,Best
     }
     /**
@@ -21,6 +21,7 @@ public class SolutionList extends LinkedList<Double[]> {
         super();
         this.n = n;
     }
+    
     /**
      * adds a new Solution to the SolutionList
      * warning : you must add a solution with length = n + 1
@@ -54,4 +55,19 @@ public class SolutionList extends LinkedList<Double[]> {
         return n+1;
     }
     
+    public void setBest() {
+        Type = SolutionType.Best;
+    }
+    
+    public void setOne() {
+        Type = SolutionType.One;
+    }
+    
+    public void setUnlimited() {
+        Type = SolutionType.Unlimited;
+    }
+    
+    public void setInfinity() {
+        Type = SolutionType.Infinity;
+    }
 }
