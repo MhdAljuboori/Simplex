@@ -95,10 +95,10 @@ public class SimplexTable {
     
     /**
      * 
-     * @param ACb to set solution in solution variable
+     * @param solution variable that we'll add new solution to it
+     * @param ACb the Matrix which we'll get solution from it
      */
-    private void setNewSolution(Matrix ACb) {
-        solution = new SolutionList(numberOfVariable +1/*of ObjFun*/);
+    public void addNewSolution(SolutionList solution, Matrix ACb) {
         Double[] Newb = new Double[numberOfVariable +1/*of ObjFun*/];
         
         int AI =0;
@@ -113,6 +113,15 @@ public class SimplexTable {
             }
         }
         solution.add(Newb);
+    }
+    
+    /**
+     * 
+     * @param ACb to set solution in solution variable
+     */
+    private void setNewSolution(Matrix ACb) {
+        solution = new SolutionList(numberOfVariable +1/*of ObjFun*/);
+        addNewSolution(solution, ACb);
     }
     
     /**
