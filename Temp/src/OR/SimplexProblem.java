@@ -69,6 +69,7 @@ public class SimplexProblem {
                 for (int i = 0; i < ZeroNonBasicNumber; i++) {
                     table.updateTable(table.getIndexOfNonBasicVariableZero());
                     table.addNewSolution(solution);
+                    solution.setInfinity();
                 }
             }
         }
