@@ -8,10 +8,9 @@ package OR;
  */
 public class SimplexProblem {
     Matrix A;
-    Matrix C;
-    Matrix b;
+    Double[] C;
+    Double[] b;
     
-    SimplexTable table;
     
     ProblemType Type;
     public enum ProblemType {
@@ -25,7 +24,7 @@ public class SimplexProblem {
         
     }
     
-    public SimplexProblem(ProblemType type,double[][] A,double[] C , double[] b) {
+    public SimplexProblem(ProblemType type,double[][] A,Double[] C , Double[] b) {
        // we consider that all conditions are <=  .... simple simplex
        this.Type = type;
        //creating Matrix[m,n+m]; slack for every condition
@@ -37,11 +36,12 @@ public class SimplexProblem {
        //extends the matrix by an identity matrix of slacks
        mA.setMatrix(0,m-1,n,n+m-1, Matrix.identity(m, m));
        this.A = mA;
-       this.C = new Matrix(1,n+m);
-       this.C.setMatrix(0, 0, 0, n-1, new Matrix(new double[][] {C}));
-       this.C.setMatrix(0, 0, n, n+m-1, new Matrix(new double[1][m]));
-       this.b = new Matrix(new double[][] {b}).transpose();
-       
+       this.C = new Double[n+m];
+       for (int i=0;i<n;i++)
+           this.C[i] = C[i];
+       for (int i=n;i<n+m;i++)
+           this.C[i] = new Double(0);
+       this.b = b;
        //Heeeeeeeeeeeeeeeeeeeeeeeeerrreeeeeeeeeeeeee
        //table = new SimplexTable(A, C.getArray()[0], b.transpose().getArray()[0], isMax());
     }
@@ -58,6 +58,7 @@ public class SimplexProblem {
     }
     
     public SolutionList solveByTableSimplex() {
+        SimplexTable table = new SimplexTable(A, C ,b ,true);
         SolutionList solution = table.getSolution();
         while (!table.isItBestSolution()) {
             int solutionType = table.updateTable();

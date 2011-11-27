@@ -385,7 +385,7 @@ private void btnRemoveVarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     tabC.removeColumn(tabC.getColumn("X" + (count)));
 }//GEN-LAST:event_btnRemoveVarActionPerformed
 
-private static double[][] Vector2DoubleArray(Vector<Vector<Double>> a) {
+private static double[][] Vector2doubleArray(Vector<Vector<Double>> a) {
     
     double[][] doubles = new double[a.size()][a.get(0).size()];
     for (int i=0;i<a.size();i++) {
@@ -395,16 +395,38 @@ private static double[][] Vector2DoubleArray(Vector<Vector<Double>> a) {
     return doubles;
 }
 
+private static Double[][] Vector2DoubleArray(Vector<Vector<Double>> a) {
+    
+    Double[][] doubles = new Double[a.size()][a.get(0).size()];
+    for (int i=0;i<a.size();i++) {
+        for (int j=0;j<a.get(i).size();j++)
+            doubles[i][j] = a.get(i).get(j);
+    }
+    return doubles;
+}
+
+private static Double[] double2Double(double[] a) {
+    
+    Double[] doubles = new Double[a.length];
+    for (int i=0;i<a.length;i++) {
+            doubles[i] = a[i];
+    }
+    return doubles;
+}
+
 private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
 // TODO add your handling code here:
     DefaultTableModel model = (DefaultTableModel) tabConditions.getModel();
-    Matrix A = new Matrix(Vector2DoubleArray(model.getDataVector()));
+    double[][] A = Vector2doubleArray(model.getDataVector());
     model = (DefaultTableModel) tabC.getModel();
-    Matrix C = new Matrix(Vector2DoubleArray(model.getDataVector()));
+    Double[] C = Vector2DoubleArray(model.getDataVector())[0];
     model = (DefaultTableModel) tabB.getModel();
-    Matrix b = new Matrix(Vector2DoubleArray(model.getDataVector()));
+    
+    Matrix temp = new Matrix(Vector2doubleArray(model.getDataVector()));
+    double[] b = temp.transpose().getArray()[0];
+    
     SimplexProblem problem = new SimplexProblem(SimplexProblem.ProblemType.valueOf(cbMaxMin.getSelectedItem().toString()),
-            A.getArray(), C.getArray()[0], b.transpose().getArray()[0]);
+            A, C, double2Double(b));
     SolutionList list = problem.solveByTableSimplex();
     model = (DefaultTableModel)tabSolutions.getModel();
     
