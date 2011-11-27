@@ -26,6 +26,7 @@ public class SimplexTable {
     // class have basic variable and it's value
     private SolutionList solution;
     
+    
     /**
      * 
      * @param A the A Matrix
@@ -314,11 +315,11 @@ public class SimplexTable {
      *         -2 if there is unlimited solution
      *          0 Table was updated
      */
-    public int updateTable() {
+    public void updateTable() {
         int indexOfInVariable = getIndexOfInVariable();
         int indexOfOutVariable = getIndexOfOutVariable(indexOfInVariable);
         if (indexOfInVariable == -1) {
-            return -1; 
+            solution.Type = Best; 
         }
         else if (indexOfOutVariable == -1) {
             return -2;

@@ -11,7 +11,7 @@ public class SolutionList extends LinkedList<Double[]> {
     private int n;
     public SolutionType Type = SolutionType.One;
     public enum SolutionType {
-        One,Unlimited,Infinity
+        One,Unlimited,Infinity,Best
     }
     /**
      *  creates a new solution for n variables

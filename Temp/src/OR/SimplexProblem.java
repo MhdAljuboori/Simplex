@@ -10,6 +10,9 @@ public class SimplexProblem {
     Matrix A;
     Matrix C;
     Matrix b;
+    
+    SimplexTable table;
+    
     ProblemType Type;
     public enum ProblemType {
         Max,
@@ -38,6 +41,9 @@ public class SimplexProblem {
        this.C.setMatrix(0, 0, 0, n-1, new Matrix(new double[][] {C}));
        this.C.setMatrix(0, 0, n, n+m-1, new Matrix(new double[1][m]));
        this.b = new Matrix(new double[][] {b}).transpose();
+       
+       //Heeeeeeeeeeeeeeeeeeeeeeeeerrreeeeeeeeeeeeee
+       //table = new SimplexTable(A, C.getArray()[0], b.transpose().getArray()[0], isMax());
     }
     
     /** 
@@ -47,11 +53,13 @@ public class SimplexProblem {
         return new SimplexProblem();
     }
     
-    public boolean isMax() {
+    private boolean isMax() {
         return (Type == ProblemType.Max) ? true : false;
     }
     
     public SolutionList solveByTableSimplex() {
-        return new SolutionList(10); // just test;
+        while (!table.isItBestSolution()) {
+            table.updateTable();
+        }
     }
 }
