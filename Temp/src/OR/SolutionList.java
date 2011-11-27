@@ -36,6 +36,19 @@ public class SolutionList extends LinkedList<Double[]> {
         }
     }
     
-    
+    /**
+     * gets the number of variables (n) in this solution
+     * @return 
+     */
+    public int getVariablesCount() {
+        return n;
+    }
+    /**
+     * gets the full length (with z)
+     * @return 
+     */
+    public int getLength() {
+        return n+1;
+    }
     
 }
