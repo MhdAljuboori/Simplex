@@ -47,6 +47,10 @@ public class SimplexProblem {
         return new SimplexProblem();
     }
     
+    public boolean isMax() {
+        return (Type == ProblemType.Max) ? true : false;
+    }
+    
     public SolutionList solveByTableSimplex() {
         return new SolutionList(10); // just test;
     }

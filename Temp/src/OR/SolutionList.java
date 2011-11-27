@@ -9,7 +9,10 @@ import java.util.LinkedList;
  */
 public class SolutionList extends LinkedList<Double[]> {
     private int n;
-    
+    public SolutionType Type = SolutionType.One;
+    public enum SolutionType {
+        One,Unlimited,Infinity
+    }
     /**
      *  creates a new solution for n variables
      * @param n number of variables
