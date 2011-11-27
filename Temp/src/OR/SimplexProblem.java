@@ -58,20 +58,23 @@ public class SimplexProblem {
     }
     
     public SolutionList solveByTableSimplex() {
-        SimplexTable table = new SimplexTable(A, C ,b ,true);
+        SimplexTable table = new SimplexTable(A, C ,b ,isMax());
         SolutionList solution = table.getSolution();
         while (!table.isItBestSolution()) {
             int solutionType = table.updateTable();
             if (solutionType == -2) {
                 solution = table.getSolution();
             }
-            else if(solutionType == -1) {
-                int ZeroNonBasicNumber = table.getIndexOfNonBasicVariableZero();
-                for (int i = 0; i < ZeroNonBasicNumber; i++) {
-                    table.updateTable(table.getIndexOfNonBasicVariableZero());
-                    table.addNewSolution(solution);
-                    solution.setInfinity();
-                }
+            else {
+            	solution = table.getSolution();
+            }
+        }
+        if(table.isItBestSolution()) {
+            int ZeroNonBasicNumber = table.getIndexOfNonBasicVariableZero();
+            for (int i = 0; i < ZeroNonBasicNumber; i++) {
+                table.updateTable(table.getIndexOfNonBasicVariableZero());
+                table.addNewSolution(solution);
+                solution.setInfinity();
             }
         }
         return solution;

@@ -63,7 +63,7 @@ public class SimplexTable {
         this.ACb.addVectorAsRaw(0, 0, numberOfVariable+1, C);
         
         //set new solution in solution variable
-        setNewSolution(ACb);
+        setNewSolution();
     }
     
     private Double[] getFirstColumn() {
@@ -118,9 +118,9 @@ public class SimplexTable {
     
     /**
      * 
-     * @param ACb to set solution in solution variable
+     * 
      */
-    private void setNewSolution(Matrix ACb) {
+    private void setNewSolution() {
         solution = new SolutionList(numberOfVariable +1/*of ObjFun*/);
         addNewSolution(solution);
     }
@@ -298,7 +298,7 @@ public class SimplexTable {
         int number =0;
         for (int j = 1; j < numberOfVariable+1; j++) {
             if (!find(Basic,j)) {
-                if (A.get(0, j) == 0) {
+                if (ACb.get(0, j) == 0) {
                     number++;
                 }
             }
@@ -313,7 +313,7 @@ public class SimplexTable {
     public int getIndexOfNonBasicVariableZero() {
         for (int j = 1; j < numberOfVariable+1; j++) {
             if (!find(Basic,j)) {
-                if (A.get(0, j) == 0) {
+                if (ACb.get(0, j) == 0) {
                     return j;
                 }
             }
@@ -345,7 +345,7 @@ public class SimplexTable {
             //Get New Table after update it
             ACb = getNewTable(indexOfOutVariable, indexOfInVariable);
             //Set new solution in solution Class
-            setNewSolution(ACb);
+            setNewSolution();
             solution.setOne();
             return 0;
         }
@@ -363,7 +363,7 @@ public class SimplexTable {
             //Get New Table after update it
             ACb = getNewTable(indexOfOutVariable, indexOfInVariable);
             //Set new solution in solution Class
-            setNewSolution(ACb);
+            setNewSolution();
             solution.setOne();
             return 0;
         }
