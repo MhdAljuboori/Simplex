@@ -491,7 +491,9 @@ private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         tabSolutions.removeColumn(tabSolutions.getColumn("X" + (tabSolutions.getColumnCount()-1)));
     }
    
-    //model.setColumnCount(list.getLength());
+    if (model.getRowCount() >= 1) {
+        model.setRowCount(0);
+    }
     for (int i=0;i<list.size();i++) {
         Double[] row = list.get(i);
         model.addRow(row);
