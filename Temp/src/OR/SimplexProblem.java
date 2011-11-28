@@ -76,7 +76,7 @@ public class SimplexProblem {
             int ZeroNonBasicNumber = table.getIndexOfNonBasicVariableZero();
             for (int i = 0; i < ZeroNonBasicNumber; i++) {
                 table.updateTable(table.getIndexOfNonBasicVariableZero());
-                table.addNewSolution(solution);
+                solution.add(table.getSolution().get(0));
                 solution.setInfinity();
             }
         }
