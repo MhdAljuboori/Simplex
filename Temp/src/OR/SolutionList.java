@@ -10,7 +10,7 @@ import java.util.LinkedList;
 public class SolutionList extends LinkedList<Double[]> {
     private int n;
     private SolutionType Type = SolutionType.OneOptimalSolution;
-    private enum SolutionType {
+    public enum SolutionType {
         OneOptimalSolution,Unlimited,InfinityOfOptimalSolutions,Best
     }
     

@@ -71,6 +71,29 @@ public class SimplexProblem {
         return (Type == ProblemType.Max) ? true : false;
     }
     
+    public String getLegalFormAsText() {
+        String LegalForm = "Legal Form : \n";
+        StringBuilder LegalFormBuilder = new StringBuilder(LegalForm);
+        // addign Z statement
+        LegalFormBuilder.append(Type.toString().toLowerCase()).append("Z=");
+        for (int i=0;i<C.length-1;i++)
+            LegalFormBuilder.append(C[i]).append(" X").append(i+1).append(" +");
+        LegalFormBuilder.append(C[C.length-1]).append(" X").append(C.length).append(" \n");
+        
+        // adding conditions
+        LegalFormBuilder.append("Subjected To : \n");
+        
+        for (int i = 0; i < A.getRowDimension(); i++) {
+            LegalFormBuilder.append("\t");
+            for (int j = 0; j < A.getColumnDimension()-1; j++) {
+                LegalFormBuilder.append(A.get(i, j)).append(" X").append(j+1).append(" +");
+            }
+            LegalFormBuilder.append(A.get(i,A.getColumnDimension()-1)).append(" X").append(A.getColumnDimension()).append(" = ");
+            LegalFormBuilder.append(b[i].toString()).append("\n");
+        }
+        LegalForm = LegalFormBuilder.toString();
+        return LegalForm;
+    }
     /**
      * 
      * @return solution of table we worked on it
