@@ -209,7 +209,7 @@ public class MainForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnRemoveVar)
-                            .addComponent(btnRemoveCondition, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+                            .addComponent(btnRemoveCondition, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
                         .addGap(49, 49, 49))
                     .addComponent(btnSolve, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(2, 2, 2)
@@ -219,7 +219,7 @@ public class MainForm extends javax.swing.JFrame {
                         .addGap(251, 251, 251)
                         .addComponent(lblResult))
                     .addComponent(lblTime))
-                .addGap(330, 330, 330))
+                .addGap(382, 382, 382))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAddCondition, btnAddVar, btnRemoveCondition, btnRemoveVar});
@@ -243,7 +243,7 @@ public class MainForm extends javax.swing.JFrame {
                                     .addComponent(btnRemoveCondition, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                                     .addComponent(btnAddCondition, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
                                     .addComponent(jLabel6))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                                 .addComponent(btnSolve))
                             .addComponent(lblTime)))
                     .addComponent(lblResult))
@@ -255,7 +255,6 @@ public class MainForm extends javax.swing.JFrame {
         jLabel3.setText("Solutions :");
 
         scrollLegalForm.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollLegalForm.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         txtLegalForm.setColumns(20);
         txtLegalForm.setEditable(false);
@@ -336,12 +335,11 @@ public class MainForm extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addGap(146, 146, 146))
+                        .addComponent(jLabel2))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGap(17, 17, 17))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -411,7 +409,7 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(scrollLegalForm, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
