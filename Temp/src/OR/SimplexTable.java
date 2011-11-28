@@ -399,6 +399,9 @@ public class SimplexTable {
         Matrix updatedMatrix = new Matrix(numberOfEquation +1/*for ObjFun*/ ,
                 numberOfVariable +2/*for instance of ObjFun and RHS*/);
         
+        //set first instance of Z
+        updatedMatrix.set(0, 0, 1);
+        
         //get dependence item
         double a = ACb.get(indexOfOutVariable, indexOfInVariable);
         
