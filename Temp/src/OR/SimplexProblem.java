@@ -74,7 +74,7 @@ public class SimplexProblem {
     public SolutionList solveByTableSimplex() {
         SimplexTable table = new SimplexTable(A, C ,b ,isMax());
         SolutionList solution = table.getSolution();
-        long t0 = System.currentTimeMillis();
+        long t0 = System.nanoTime();
         while (!table.isItBestSolution()) {
             int solutionType = table.updateTable();
             if (solutionType == -2) {
@@ -95,8 +95,10 @@ public class SimplexProblem {
                 solution.setInfinity();
             }
         }
-        long t1 = System.currentTimeMillis();
+        long t1 = System.nanoTime();
         setTime(t1-t0);
+        solution.time = getTime();
+        solution.table = table;
         return solution;
     }
 }

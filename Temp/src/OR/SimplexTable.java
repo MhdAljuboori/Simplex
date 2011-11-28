@@ -220,13 +220,16 @@ public class SimplexTable {
      * @return All Table with Basic variables
      */
     public Matrix getTable() {
-        Double[] NewBasic = new Double[Basic.length];
+        double[] NewBasic = new double[Basic.length];
         for (int i=0 ;i<Basic.length ;i++) {
             NewBasic[i] = Basic[i].doubleValue();
         }
         Matrix NewACb = ACb;
-        NewACb.addVectorAsColumn(0, 0, numberOfEquation+1, NewBasic);
-        return NewACb;
+        Matrix fulltable = new Matrix(NewACb.getRowDimension(), NewACb.getColumnDimension()+1);
+        fulltable.setMatrix(0, NewACb.getRowDimension()-1, 1, NewACb.getColumnDimension(),NewACb);
+        fulltable.setMatrix(1, NewBasic.length,0,0,new Matrix(new double[][] {NewBasic}).transpose());
+        //NewACb.addVectorAsColumn(1, 1, numberOfEquation, NewBasic);
+        return fulltable;
     }
     
     /**

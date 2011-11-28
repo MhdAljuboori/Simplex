@@ -13,6 +13,9 @@ public class SolutionList extends LinkedList<Double[]> {
     private enum SolutionType {
         One,Unlimited,Infinity,Best
     }
+    
+    public SimplexTable table;
+    public long time ;
     /**
      *  creates a new solution for n variables
      * @param n number of variables
