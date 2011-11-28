@@ -71,34 +71,56 @@ public class SimplexProblem {
         return (Type == ProblemType.Max) ? true : false;
     }
     
+    /**
+     * 
+     * @return solution of table we worked on it
+     */
     public SolutionList solveByTableSimplex() {
         SimplexTable table = new SimplexTable(A, C ,b ,isMax());
+        //set first solution
         SolutionList solution = table.getSolution();
+        //Start Time
         long t0 = System.nanoTime();
+        //while table not best
         while (!table.isItBestSolution()) {
+            //update tabe and set type of solution
             int solutionType = table.updateTable();
+            //if it's unlimited
             if (solutionType == -2) {
                 solution = table.getSolution();
+                //Exit loop
                 break;
             }
+            //solution is already best
             else if(solutionType == -1) {
+                //Exit loop
                 break;
             }
+            //there is a solution
             else {
             	solution = table.getSolution();
             }
         }
+        //if table is best
         if(table.isItBestSolution()) {
+            //get number of non basic variables
             int ZeroNonBasicNumber = table.getIndexOfNonBasicVariableZero();
+            //for all zeros
             for (int i = 0; i < ZeroNonBasicNumber; i++) {
+                //update table and assume that first index of zero inVariable
                 table.updateTable(table.getIndexOfNonBasicVariableZero());
+                //add solution to solution variable
                 solution.add(table.getSolution().get(0));
+                //solution type is infinity
                 solution.setInfinity();
             }
         }
+        //End Time
         long t1 = System.nanoTime();
         setTime(t1-t0);
+        //set solution time
         solution.time = getTime();
+        //set solution table
         solution.table = table;
         return solution;
     }

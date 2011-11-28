@@ -11,9 +11,6 @@ public class SimplexTable {
     // is objective function Max
     private boolean isMax;
     
-    //constant of variables evrey equation
-    private Matrix A;
-    
     //constant of objective function variables
     private Double[] C;
     
@@ -29,14 +26,13 @@ public class SimplexTable {
     
     /**
      * 
-     * @param A the A Matrix
-     * @param C the C vector
-     * @param b the b vector
-     * @param isMax 
+     * @param A the instance Matrix of equations
+     * @param C the instance Vector of objective function
+     * @param b the right side hand
+     * @param isMax true if objective function max false if it's min
      */
     public SimplexTable(Matrix A,Double[] C,Double[] b,boolean isMax) {
         //Sets Value
-        this.A = A;
         this.C = C; 
         this.isMax = isMax;
         
@@ -50,6 +46,7 @@ public class SimplexTable {
         //set number of equation in numberOfEquation instance
         this.numberOfEquation = A.getRowDimension();
         
+        //new Matrix have A and C and b
         ACb = new Matrix(A.getArray());
         
         //must be -C in Table and Z instance which is it One
@@ -66,6 +63,10 @@ public class SimplexTable {
         setNewSolution();
     }
     
+    /**
+     * 
+     * @return vector of first column of objective function
+     */
     private Double[] getFirstColumn() {
     	Double[] helpVector = new Double[numberOfEquation];
     	for (int i = 0; i < helpVector.length; i++) {
@@ -95,9 +96,9 @@ public class SimplexTable {
     }
     
     /**
+     * add new solution to parameter we enter it
      * 
      * @param solution variable that we'll add new solution to it
-     * @param ACb the Matrix which we'll get solution from it
      */
     public void addNewSolution(SolutionList solution) {
         Double[] Newb = new Double[numberOfVariable +1/*of ObjFun*/];
@@ -118,6 +119,8 @@ public class SimplexTable {
     
     /**
      * 
+     * set new solution to global solution variable
+     * and add to it new solution
      * 
      */
     private void setNewSolution() {
@@ -127,7 +130,8 @@ public class SimplexTable {
     
     /**
      * 
-     * @retrun Basic vector of basic variable
+     * @retrun Basic vector of basic variable of first
+     * mean first basic variable in Basic vector
      * @param index number of first Basic variable in objective function
      */
     private Integer[] getBasicVariableVector(int index) {
@@ -139,6 +143,7 @@ public class SimplexTable {
     }
     
     /**
+     * To get number of variables in equations
      * 
      * @param C the vector of objective function
      * @return the first index of first zero
@@ -151,28 +156,9 @@ public class SimplexTable {
         return -1;
     }
     
-    ///
-    /// search variable in basic variables vector 
-    /// and return the index of variable
-    ///
     /**
      * 
-     * @param basicVariable the variable that we want to look for
-     * @return the index of variable in basic variable vector
-     */
-    
-    /*
-    private < T > int getIndexOfVariable(T[] vector,T Variable) {
-        for (int i = 0; i < vector.length; i++) {
-            if (vector[i] == Variable) {
-                return i;
-            }
-        }
-        return -1;
-     }
-     */
-    
-    /**
+     * Search value in vector
      * 
      * @param <T> double or integer ...etc.
      * @param vector which we'll search on it
@@ -228,13 +214,12 @@ public class SimplexTable {
         Matrix fulltable = new Matrix(NewACb.getRowDimension(), NewACb.getColumnDimension()+1);
         fulltable.setMatrix(0, NewACb.getRowDimension()-1, 1, NewACb.getColumnDimension(),NewACb);
         fulltable.setMatrix(1, NewBasic.length,0,0,new Matrix(new double[][] {NewBasic}).transpose());
-        //NewACb.addVectorAsColumn(1, 1, numberOfEquation, NewBasic);
         return fulltable;
     }
     
     /**
      * 
-     * @return index of in variable by looking in objective function equation
+     * @return index of in variable by looking for it in objective function equation
      */
     private int getIndexOfInVariable() {
         // Muximun in absolute
@@ -314,7 +299,9 @@ public class SimplexTable {
     public int NumberOfNonBasicVariableZero() {
         int number =0;
         for (int j = 1; j < numberOfVariable+1; j++) {
+            // if it isn't basic variable
             if (!find(Basic,j)) {
+                //if it's equal to zero in Ojective function (in C)
                 if (ACb.get(0, j) == 0) {
                     number++;
                 }
@@ -329,7 +316,9 @@ public class SimplexTable {
      */
     public int getIndexOfNonBasicVariableZero() {
         for (int j = 1; j < numberOfVariable+1; j++) {
+            // if it isn't basic variable
             if (!find(Basic,j)) {
+                //if it's equal to zero in Ojective function (in C)
                 if (ACb.get(0, j) == 0) {
                     return j;
                 }
@@ -348,10 +337,12 @@ public class SimplexTable {
     public int updateTable() {
         int indexOfInVariable = getIndexOfInVariable();
         int indexOfOutVariable = getIndexOfOutVariable(indexOfInVariable);
+        // if there is not variable to in equation
         if (indexOfInVariable == -1) {
             solution.setBest();
             return -1;
         }
+        // if there is not variable to out equation (all items in dependence column Negative or Zero)
         else if (indexOfOutVariable == -1) {
             solution.setUnlimited();
             return -2;
@@ -368,6 +359,15 @@ public class SimplexTable {
         }
     }
     
+    
+    /**
+     * update table after entry variable to basic variables vector
+     * and out variable from basic variables vector
+     * 
+     * @param indexOfInVariable the index variable which will entry the basic solution
+     * @return -2 if there is unlimited solution
+     *          0 Table was updated
+     */
     public int updateTable(int indexOfInVariable) {
         int indexOfOutVariable = getIndexOfOutVariable(indexOfInVariable);
         if (indexOfOutVariable == -1) {
@@ -390,8 +390,8 @@ public class SimplexTable {
      * update table after entry variable to basic variables vector
      * and out variable from basic variables vector
      * 
-     * @param inVariable the variable which will in the basic solution
-     *        outVariable the variable which will out the basic solution
+     * @param indexOfInVariable the variable which will entry the basic solution
+     *        indexOfOutVariable the variable which will out the basic solution
      */
     private Matrix getNewTable(int indexOfOutVariable,int indexOfInVariable) {
         

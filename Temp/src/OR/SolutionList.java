@@ -16,6 +16,7 @@ public class SolutionList extends LinkedList<Double[]> {
     
     public SimplexTable table;
     public long time ;
+    
     /**
      *  creates a new solution for n variables
      * @param n number of variables
@@ -52,7 +53,7 @@ public class SolutionList extends LinkedList<Double[]> {
     }
     /**
      * gets the full length (with z)
-     * @return 
+     * @return number of variables
      */
     public int getLength() {
         return n;
