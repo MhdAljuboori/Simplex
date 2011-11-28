@@ -10,9 +10,11 @@ public class SimplexProblem {
     Matrix A;
     Double[] C;
     Double[] b;
+    long time = 0;
     
     
     ProblemType Type;
+
     public enum ProblemType {
         Max,
         Min
@@ -46,6 +48,18 @@ public class SimplexProblem {
        //table = new SimplexTable(A, C.getArray()[0], b.transpose().getArray()[0], isMax());
     }
     
+    private void setTime(long time) {
+        this.time = time;
+    }
+    
+    /**
+     * 
+     * @return Time of execution
+     */
+    public long getTime() {
+        return time;
+    }
+    
     /** 
      * method for creating Simplex Problem by Entering the Basic Form
      */
@@ -60,6 +74,7 @@ public class SimplexProblem {
     public SolutionList solveByTableSimplex() {
         SimplexTable table = new SimplexTable(A, C ,b ,isMax());
         SolutionList solution = table.getSolution();
+        long t0 = System.currentTimeMillis();
         while (!table.isItBestSolution()) {
             int solutionType = table.updateTable();
             if (solutionType == -2) {
@@ -80,6 +95,8 @@ public class SimplexProblem {
                 solution.setInfinity();
             }
         }
+        long t1 = System.currentTimeMillis();
+        setTime(t1-t0);
         return solution;
     }
 }

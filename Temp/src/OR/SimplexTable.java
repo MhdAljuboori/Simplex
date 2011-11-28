@@ -217,6 +217,20 @@ public class SimplexTable {
     
     /**
      * 
+     * @return All Table with Basic variables
+     */
+    public Matrix getTable() {
+        Double[] NewBasic = new Double[Basic.length];
+        for (int i=0 ;i<Basic.length ;i++) {
+            NewBasic[i] = Basic[i].doubleValue();
+        }
+        Matrix NewACb = ACb;
+        NewACb.addVectorAsColumn(0, 0, numberOfEquation+1, NewBasic);
+        return NewACb;
+    }
+    
+    /**
+     * 
      * @return index of in variable by looking in objective function equation
      */
     private int getIndexOfInVariable() {
