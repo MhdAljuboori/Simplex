@@ -9,9 +9,9 @@ import java.util.LinkedList;
  */
 public class SolutionList extends LinkedList<Double[]> {
     private int n;
-    private SolutionType Type = SolutionType.One;
+    private SolutionType Type = SolutionType.OneOptimalSolution;
     private enum SolutionType {
-        One,Unlimited,Infinity,Best
+        OneOptimalSolution,Unlimited,InfinityOfOptimalSolutions,Best
     }
     
     public SimplexTable table;
@@ -63,7 +63,7 @@ public class SolutionList extends LinkedList<Double[]> {
     }
     
     public void setOne() {
-        Type = SolutionType.One;
+        Type = SolutionType.OneOptimalSolution;
     }
     
     public void setUnlimited() {
@@ -71,6 +71,14 @@ public class SolutionList extends LinkedList<Double[]> {
     }
     
     public void setInfinity() {
-        Type = SolutionType.Infinity;
+        Type = SolutionType.InfinityOfOptimalSolutions;
+    }
+    
+    /**
+     * gets the type if the solution
+     * @return one , unlimited or Infinity of optimal Solutions
+     */
+    public SolutionType getType() {
+        return this.Type;
     }
 }

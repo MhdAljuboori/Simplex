@@ -65,7 +65,7 @@ public class MainForm extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         btnSolve = new javax.swing.JButton();
         lblTime = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        lblSolType = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -227,7 +227,7 @@ public class MainForm extends javax.swing.JFrame {
 
         lblTime.setText("Time : ?");
 
-        jLabel8.setText("Solution Type : ?");
+        lblSolType.setText("Solution Type : ?");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -255,7 +255,7 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(btnSolve, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
+                    .addComponent(lblSolType)
                     .addComponent(lblTime))
                 .addContainerGap())
         );
@@ -274,7 +274,7 @@ public class MainForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnRemoveCondition, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-                        .addComponent(jLabel8))
+                        .addComponent(lblSolType))
                     .addComponent(btnAddCondition, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -520,6 +520,7 @@ private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
     tabTable.setModel(model);
     lblTime.setText("Time : " + list.time + " ns");
+    lblSolType.setText("Solution Type : " + list.getType());
     }
     catch (NullPointerException e) {
         JOptionPane.showMessageDialog(this, "Wrong Input !! .. did you enter all the boxes ? .. any Boxes under edit now ?");
@@ -575,13 +576,13 @@ private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JLabel lblSolType;
     private javax.swing.JLabel lblTime;
     private javax.swing.JLabel lblZstatement;
     private javax.swing.JTable tabB;
