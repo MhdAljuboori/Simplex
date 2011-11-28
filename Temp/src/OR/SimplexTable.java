@@ -227,7 +227,7 @@ public class SimplexTable {
         int index = -1;
         
         // for all instance of objective function variables
-        for (int i = 0; i < numberOfVariable +2/*for ObjFun and RHS*/; i++) {
+        for (int i = 1; i < numberOfVariable +2/*for ObjFun and RHS*/; i++) {
             //if the objective function Max
             if (isMax) {
                 //if there is number smaller than last
