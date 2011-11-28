@@ -79,6 +79,7 @@ public class SimplexProblem {
             int solutionType = table.updateTable();
             if (solutionType == -2) {
                 solution = table.getSolution();
+                break;
             }
             else if(solutionType == -1) {
                 break;
