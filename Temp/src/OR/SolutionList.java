@@ -45,14 +45,14 @@ public class SolutionList extends LinkedList<Double[]> {
      * @return 
      */
     public int getVariablesCount() {
-        return n;
+        return n-1;
     }
     /**
      * gets the full length (with z)
      * @return 
      */
     public int getLength() {
-        return n+1;
+        return n;
     }
     
     public void setBest() {
