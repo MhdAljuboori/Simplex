@@ -501,7 +501,7 @@ private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     
     // adding table
     String[] names = new String[list.getLength()+2];
-    names[0] = " ";
+    names[0] = "Basic";
     names[1] = "Z";
     names[names.length-1]="RHS";
     for (int i=2;i<names.length-1;i++)
